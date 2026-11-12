@@ -1,0 +1,50 @@
+  <!-- adherent dashboard -->
+<div class="container py-5">
+  <h1 class="text-center text-white mb-5 display-5 fw-bold">
+    Bienvenue,
+  </h1>
+
+  <!-- Section Livres Disponibles -->
+  <h3 class="text-warning mb-4">📚 Livres Disponibles</h3>
+  <div class="row g-4">
+    @for (livre of livresDisponibles(); track livre.id) {
+      <div class="col-lg-4 col-md-6">
+        <div class="card glass book-card h-100 border-0 rounded-4 overflow-hidden">
+          <div class="card-body d-flex flex-column p-4">
+            <h5 class="card-title fw-bold text-warning">{{ livre.titre }}</h5>
+            <p class="text-warning">{{ livre.auteur }}</p>
+            <p class="badge bg-success fs-6 mt-auto">{{ livre.categorie }}</p>
+            
+            <a [routerLink]="['/emprunter', livre.id]" 
+               class="btn btn-gold mt-4 w-100">
+              Emprunter ce livre
+            </a>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Section Mes Emprunts -->
+  <h3 class="text-warning mt-5 mb-4">Mes Emprunts en Cours</h3>
+  <div class="glass rounded-4 p-4">
+    <table class="table table-dark-custom table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Livre</th>
+          <th>Date Emprunt</th>
+          <th>Retour Prévu</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (emprunt of mesEmprunts(); track emprunt.id) {
+          <tr>
+            <td>{{ emprunt.livre?.titre || 'Livre #' + emprunt.livre }}</td>
+            <td>{{ emprunt.dateEmprunt | date }}</td>
+            <td>{{ emprunt.dateRetour | date }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

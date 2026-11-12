@@ -1,0 +1,92 @@
+<div class="glass rounded-4 p-4">
+  <h4 class="text-warning mb-4">📋 Emprunts Non Retournés</h4>
+  
+  <div class="table-responsive">
+    <table class="table table-dark-custom table-hover">
+      <thead>
+        <tr>
+          <th>Adhérent</th>
+          <th>Livre</th>
+          <th>Date d'Emprunt</th>
+          <th>Date Retour Prévue</th>
+          <th class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (emprunt of empruntsNonRetournes(); track emprunt.id) {
+          <tr>
+
+            <td>
+              <strong>#{{ emprunt.utilisateur?.id || 'N/A' }}</strong><br>
+              <span class="text-white">{{ emprunt.utilisateur?.nom || 'Inconnu' }}</span>
+            </td>
+
+            <td>
+              <strong>{{ emprunt.livre?.titre || 'Livre #' + (emprunt.livre?.id || 'N/A') }}</strong><br>
+              <small class="text-warning">{{ emprunt.livre?.auteur || '' }}</small>
+            </td>
+
+            <td>{{ emprunt.dateEmprunt | date:'mediumDate' }}</td>
+            <td>{{ emprunt.dateRetour | date:'mediumDate' }}</td>
+
+            <td class="text-center">
+              <button 
+                class="btn btn-success btn-sm px-4"
+                (click)="emprunt.id && validerRetour(emprunt.id)">
+                Valider le Retour
+              </button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  @if (empruntsNonRetournes().length === 0) {
+    <div class="text-center py-5 text-warning">
+      Aucun emprunt en cours à valider pour le moment.
+    </div>
+  }
+</div>
+     <!-- Section Ajout de Livre -->
+    <div class="glass rounded-4 p-4 mt-5">
+      <h4 class="text-warning mb-4">➕ Ajouter un nouveau livre</h4>
+      
+      <form (ngSubmit)="ajouterLivre()" #livreForm="ngForm">
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label text-white">Titre du livre</label>
+            <input type="text" 
+                   class="form-control bg-dark text-white border-secondary" 
+                   [(ngModel)]="nouveauLivre.titre" 
+                   name="titre" 
+                   required>
+          </div>
+          
+          <div class="col-md-6">
+            <label class="form-label text-white">Auteur</label>
+            <input type="text" 
+                   class="form-control bg-dark text-white border-secondary" 
+                   [(ngModel)]="nouveauLivre.auteur" 
+                   name="auteur" 
+                   required>
+          </div>
+          
+          <div class="col-12">
+            <label class="form-label text-white">Catégorie</label>
+            <input type="text" 
+                   class="form-control bg-dark text-white border-secondary" 
+                   [(ngModel)]="nouveauLivre.categorie" 
+                   name="categorie"
+                   placeholder="Ex: Roman, Science-fiction, Histoire...">
+          </div>
+        </div>
+
+        <button type="submit" 
+                class="btn btn-gold w-100 mt-4 py-2"
+                [disabled]="!nouveauLivre.titre || !nouveauLivre.auteur">
+          Ajouter le livre à la bibliothèque
+        </button>
+      </form>
+    </div>
+

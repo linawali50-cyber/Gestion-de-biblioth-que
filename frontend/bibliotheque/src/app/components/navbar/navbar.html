@@ -1,0 +1,71 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom border-warning border-2 sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+      <span class="fs-2">📚</span>
+      <span>Bibliothèque</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto align-items-center gap-3">
+
+        @if (authService.currentUser(); as user) {
+
+          @if (user.role === 'ADHERENT' || user.role === 'BIBLIOTHECAIRE') {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/livres">Livres</a>
+            </li>
+          }
+
+          @if (user.role === 'ADHERENT') {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/adherent-dashboard">Mon Espace</a>
+            </li>
+          }
+
+          @if (user.role === 'BIBLIOTHECAIRE') {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/bibliothecaire-dashboard">Gestion</a>
+            </li>
+          }
+
+          @if (user.role === 'ADMIN') {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/admin">Administration</a>
+            </li>
+          }
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ user.nom }} <span class="text-warning">({{ user.role }})</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <button class="dropdown-item text-danger" (click)="logout()">
+                  🚪 Déconnexion
+                </button>
+              </li>
+            </ul>
+          </li>
+
+        } @else {
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/">Accueil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/livres">Livres</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/login">Connexion</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-warning px-4" routerLink="/register">S'inscrire</a>
+          </li>
+        }
+
+      </ul>
+    </div>
+  </div>
+</nav>
